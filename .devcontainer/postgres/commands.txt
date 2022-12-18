@@ -1,0 +1,15 @@
+#postgresにアクセス
+#DBには繋がらないので、\cで繋ぐ
+$ docker exec -it chitchat-db psql -U postgres postgres
+
+#DB一覧取得
+postgres=# \l
+
+#テーブル一覧取得
+postgres=# \dt
+
+#DB接続切り替え
+postgres# \c [DB名]
+
+#現在接続中のDB表示
+postgres# select current_database();

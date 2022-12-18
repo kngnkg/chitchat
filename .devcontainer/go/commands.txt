@@ -1,0 +1,6 @@
+#開発用 pingコマンド等をインストール
+$ apt-get install iputils-ping net-tools
+
+#dbコンテナ疎通確認
+$ ping db
+
