@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	p("ChitChat", config.Version, "started at", config.Address)
+	// p("ChitChat", config.Version, "started at", config.Address)
 
 	// handle static assets
 	mux := http.NewServeMux()
@@ -22,6 +22,9 @@ func main() {
 	mux.HandleFunc("/", index)
 	// error
 	mux.HandleFunc("/err", err)
+
+	mux.HandleFunc("/login", login)
+	mux.HandleFunc("/signup", signup)
 
 	// starting up the server
 	server := &http.Server{
