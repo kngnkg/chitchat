@@ -6,8 +6,6 @@ import (
 )
 
 func main() {
-	// p("ChitChat", config.Version, "started at", config.Address)
-
 	// handle static assets
 	mux := http.NewServeMux()
 	// ディレクトリpublicを起点とする
@@ -16,15 +14,17 @@ func main() {
 	// 残った文字列を名前にもつファイルを探す
 	mux.Handle("/static/", http.StripPrefix("/static/", files))
 
-	// ルートハンドラ関数は別ファイル
-
 	// index
 	mux.HandleFunc("/", index)
 	// error
 	mux.HandleFunc("/err", err)
 
+	// defined in route_auth.go
 	mux.HandleFunc("/login", login)
+	mux.HandleFunc("/logout", logout)
 	mux.HandleFunc("/signup", signup)
+	mux.HandleFunc("/signup_account", signupAccount)
+	mux.HandleFunc("/authenticate", authenticate)
 
 	// starting up the server
 	server := &http.Server{
