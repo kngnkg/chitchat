@@ -18,11 +18,6 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// err = Db.Ping()
-	// if err != nil {
-	// 	panic(err)
-	// }
 }
 
 // create a random UUID with from RFC 4122

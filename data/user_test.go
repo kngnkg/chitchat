@@ -100,3 +100,100 @@ func Test_CreateSession(t *testing.T) {
 		t.Error("User not linked with session")
 	}
 }
+
+func Test_Session(t *testing.T) {
+	setup()
+	if err := users[0].Create(); err != nil {
+		t.Error(err, "Cannot create user")
+	}
+	createdSess, err := users[0].CreateSession()
+	if err != nil {
+		t.Error(err, "Cannot create session")
+	}
+	retrievedSess, err := users[0].Session()
+	if err != nil {
+		t.Error(err, "Cannot get session")
+	}
+	if retrievedSess.Id == 0 {
+		t.Error("No session retrieved")
+	}
+	if retrievedSess.Id != createdSess.Id {
+		t.Error("Different session retrieved")
+	}
+}
+
+func Test_User(t *testing.T) {
+	setup()
+	if err := users[0].Create(); err != nil {
+		t.Error(err, "Cannot create user")
+	}
+	session, err := users[0].CreateSession()
+	if err != nil {
+		t.Error(err, "Cannot create session")
+	}
+	user, err := session.User()
+	if err != nil {
+		t.Error(err, "Cannot retrieve user")
+	}
+	if user.Id != users[0].Id {
+		t.Error("Different userid retrieved")
+	}
+}
+
+func Test_checkValidSession(t *testing.T) {
+	setup()
+	if err := users[0].Create(); err != nil {
+		t.Error(err, "Cannot create user")
+	}
+	session, err := users[0].CreateSession()
+	if err != nil {
+		t.Error(err, "Cannot create session")
+	}
+
+	uuid := session.Uuid
+
+	s := Session{Uuid: uuid}
+	valid, err := s.Check()
+	if err != nil {
+		t.Error(err, "Cannot check session")
+	}
+	if valid != true {
+		t.Error(err, "Session is not valid")
+	}
+}
+
+func Test_checkInvalidSession(t *testing.T) {
+	setup()
+	s := Session{Uuid: "123"}
+	valid, err := s.Check()
+	if err == nil {
+		t.Error(err, "Session is not valid but is validated")
+	}
+	if valid == true {
+		t.Error(err, "Session is valid")
+	}
+}
+
+func Test_DeleteByUUID(t *testing.T) {
+	setup()
+	if err := users[0].Create(); err != nil {
+		t.Error(err, "Cannot create user")
+	}
+	session, err := users[0].CreateSession()
+	if err != nil {
+		t.Error(err, "Cannot create session")
+	}
+
+	err = session.DeleteByUUID()
+	if err != nil {
+		t.Error(err, "Cannot delete session")
+	}
+	s := Session{Uuid: session.Uuid}
+	valid, err := s.Check()
+	if err == nil {
+		t.Error(err, "Session is valid even though deleted")
+	}
+	if valid == true {
+		t.Error(err, "Session is not deleted")
+	}
+}

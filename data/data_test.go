@@ -15,5 +15,6 @@ var users = []User{
 }
 
 func setup() {
+	SessionDeleteAll()
 	UserDeleteAll()
 }
