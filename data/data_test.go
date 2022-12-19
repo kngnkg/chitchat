@@ -15,6 +15,8 @@ var users = []User{
 }
 
 func setup() {
+	PostDeleteAll()
+	ThreadDeleteAll()
 	SessionDeleteAll()
 	UserDeleteAll()
 }
